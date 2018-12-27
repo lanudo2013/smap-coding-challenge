@@ -2,11 +2,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <!-- TODO: change this by app.css -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+        <!-- TODO: change this by bootstrap.css -->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/vendors.css' %}">
     </head>
     <body>
         {% block content %}{% endblock content %}
 
+        <script src="{% static 'js/runtime.js' %}"></script>
+        <script src="{% static 'js/vendors.js' %}"></script>
         <script src="{% static 'js/app.js' %}"></script>
     </body>
 </html>
