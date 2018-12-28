@@ -10,7 +10,7 @@ const MinifyPlugin = require('babel-minify-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const prefixPath='../static/';
+var prefixPath='../static/';
 
 module.exports = merge(common, {
     mode: 'production',
@@ -52,6 +52,19 @@ module.exports = merge(common, {
     module:{
         rules:[
             {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            context: path.resolve(__dirname, "./src/assets"),
+                            outputPath: '../assets/fonts',
+                            publicPath: '/static/assets/fonts'
+                        }
+                    }
+                ]
+            },
+            {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
                     {
@@ -64,8 +77,7 @@ module.exports = merge(common, {
                         }
                     }
                 ]
-            },
-            {
+            }, {
                 test: /\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader,

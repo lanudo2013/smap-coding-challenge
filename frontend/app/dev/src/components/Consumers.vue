@@ -1,5 +1,6 @@
 <template>
-    <div class="consumers">
+    <div class="consumers col-lg-8 offset-lg-2">
+        <h1 class="title">Consumers</h1>
         <button type="button" class="btn btn-default btn-lg btn-primary add-consumer" @click="addConsumer()"
                 :disabled="editing.id!=null">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{$t('LABEL.CONSUMER.ADD')}}
@@ -12,10 +13,6 @@
                 <option value="">{{$t('LABEL.CONSUMERTYPE.ALL')}}</option>
                 <option v-for="(ctype,key) in consumerTypes" :value="key">{{$t(ctype)}}</option>
             </select>
-            <button type="button" class="btn btn-default" @click="refreshSearch()">
-                <span class="glyphicon glyphicon-refresh refresh" data-toggle="tooltip" title="Refresh"  ></span>
-            </button>
-
             
         </div>
 
@@ -28,7 +25,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in consumers">
+            <tr v-for="item in list">
                 <td scope="row">
                     <span v-if="editing.id!==item.id">{{item.name}}</span>
                     <div v-if="editing.id==item.id">
@@ -64,10 +61,7 @@
 
                 </td>
                 <td>
-                    <button type="button" class="btn btn-default btn-lg " @click="edit(item)" :disabled="editing.id!=null&&editing.id!==item.id"
-                                        v-if="editing.id!==item.id">
-                        <span class="glyphicon glyphicon-pencil edit" data-toggle="tooltip" title="Edit"  ></span>
-                    </button>
+
 
                     <button type="button" class="btn btn-default btn-lg " @click="save(item)" :disabled="!canSave(item)"  v-if="editing.id===item.id">
                         <span class="glyphicon glyphicon-saved save" data-toggle="tooltip" title="Save"  ></span>
@@ -76,8 +70,11 @@
 
                     <span class="icon-separator"></span>
 
-                    <button type="button" class="btn btn-default btn-lg " @click="remove(item)" :disabled="editing.id!=null&&editing.id!==item.id"
-                            v-if="editing.id!==item.id">
+                    <button type="button" class="btn btn-default btn-lg " @click="showPrompt(item)"
+                            :disabled="editing.id!=null&&editing.id!==item.id"
+                            v-if="editing.id!==item.id"
+                            data-target="#deleteModal"
+                    >
                         <span class="glyphicon glyphicon-trash remove" data-toggle="tooltip" title="Remove"></span>
                     </button>
                     <button type="button" class="btn btn-default btn-lg " @click="cancel(item)"  v-if="editing.id===item.id">
@@ -90,50 +87,62 @@
             </tbody>
         </table>
 
+        <b-pagination size="lg" @change="changePage" :total-rows="consumers.length"
+                      v-model="currentPage" :per-page="pageSize"></b-pagination>
+
+
+        <div>
+            <!-- Modal Component -->
+            <b-modal id="modal1" :title="$t('LABEL.CONSUMER.DELETE.MODAL.TITLE')" ref="modalRef" @ok="remove(item)"
+                     @cancel="cancelPrompt()">
+                <p >{{$t('LABEL.CONSUMER.DELETE.MODAL.MESSAGE')}}</p>
+
+            </b-modal>
+        </div>
+
+
+
 
     </div>
 
 </template>
 
 <script>
-    import {getConsumers,getConsumerTypes, createConsumer} from '../api';
+    //import bModal from 'bootstrap-vue/es/components/modal/modal'
+   // import bPagination from 'bootstrap-vue/es/components/pagination/pagination'
 
     const emptyRow= {id: null};
     export default {
         name: "consumers",
         data(){
           return {
-              consumers: [],
-              consumerTypes: {},
               editing: emptyRow,
               editingNew: false,
-              consumerTypeFilter:''
+              consumerTypeFilter:'',
+              list: [],
+              toRemoveItem:null,
+              currentPage:1,
+              pageSize: 5
           }
         },
         watch: {
           consumerTypeFilter(newValue){
-              this.fetchConsumers(newValue);
+              this.editing=emptyRow;
+              this.editingNew=false;
+              this.currentPage=1;
+              this.$store.commit('changeConsumerTypeFilter',newValue);
+              this.$store.dispatch('getConsumers').then(() => this.updateList());
           }
         },
         methods:{
-            fetchConsumers(type) {
-                this.editing=emptyRow;
-                this.editingNew=false;
-                getConsumers(type).then(data => this.consumers=data);
+            updateList(){
+                this.list=[].concat(this.consumers).splice((this.currentPage-1)*this.pageSize, this.pageSize);
             },
-            refreshSearch(){
-                this.fetchConsumers(this.consumerTypeFilter);
+            changePage(newPage){
+                this.list=[].concat(this.consumers).splice((newPage-1)*this.pageSize, this.pageSize);
             },
             getType(id){
                 return this.$t(this.consumerTypes[id]) || '--';
-            },
-            edit(item){
-                this.editing={...item};
-                if (this.editingNew){
-                    this.consumers = this.consumers.filter(x => x.id>=0 && x.id!=null);
-                    this.editingNew=false;
-                }
-
             },
             canSave(item){
                 return item.errors==null ||
@@ -161,12 +170,12 @@
 
 
                 if (this.canSave(item)){
-                    createConsumer(item.name,item.consumer_type)
-                        .then(_ => {
-                            this.editing=emptyRow;
-                            this.editingNew=false;
-                         })
-
+                    this.$store.dispatch('createConsumer', {name:item.name, consumer_type:item.consumer_type,
+                                    consumer_type_filter: this.consumerTypeFilter
+                    }).then(() => {
+                        this.updateList()
+                        this.cancel();
+                    });
                 }else{
                     this.$forceUpdate();
                 }
@@ -178,38 +187,50 @@
                     name: '',
                     consumer_type: ''
                 }
-                this.consumers.unshift(newEl);
+                this.list.unshift(newEl);
                 this.editingNew=true;
-                this.editing={...newEl};
+                this.editing=Object.assign({}, newEl);
             },
-            remove(item){
-               this.consumers = this.consumers.filter(x => x.id!==item.id);
+            showPrompt(item){
+                this.toRemoveItem=item;
+                this.$refs.modalRef.show();
             },
-            cancel(item){
-                if (item.id >= 0){
-                    Object.assign(item, this.editing);
-                }else if (this.editingNew){
-                    this.consumers = this.consumers.filter(x => x.id>=0 && x.id!=null);
-                }
+            remove(){
+                let item = this.toRemoveItem;
+               this.$store.dispatch('removeConsumer', {
+                   id: item.id,
+                   consumer_type_filter: this.consumerTypeFilter
+               }).then(() => {
+
+                   this.updateList()
+                   this.cancelPrompt();
+               });
+            },
+            cancelPrompt(){
+                this.toRemoveItem=null;
+            },
+            cancel(){
+                this.list = this.list.filter(x => x.id>=0 && x.id!=null);
                 this.editing=emptyRow;
                 this.editingNew=false;
-
-
             }
         },
-        mounted() {
-            Promise.all([
-                getConsumers(),
-                getConsumerTypes()
-            ]).then(values => {
-                this.consumers= values[0];
-                this.consumerTypes = values[1].reduce((prev,curr) => {
+        computed: {
+            consumers(){
+                return this.$store.getters.consumers;
+            },
+            consumerTypes(){
+                const list = this.$store.getters.consumerTypes;
+                return list.reduce((prev,curr) => {
                     prev[curr.id] = curr.label;
                     return prev;
-                },{});
-            })
+                },{})
+            }
+        },
 
-
+        mounted() {
+            this.$store.dispatch('getConsumers').then(_ => this.updateList());
+            this.$store.dispatch('getConsumerTypes');
         }
     }
 </script>
@@ -254,5 +275,6 @@
     .consumers{
         margin-top: 3%;
     }
+
 
 </style>

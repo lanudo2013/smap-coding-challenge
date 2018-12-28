@@ -25,7 +25,7 @@
         </nav>
 
 
-        <div class="col-lg-8 offset-md-2">
+        <div class="col-lg-12">
             <transition name="fade" mode="out-in">
             <router-view></router-view>
             </transition>

@@ -85,3 +85,9 @@ mock.onPost(/\/api\/consumer\//).reply(function(config){
 
     return [200, {success:true}];
 });
+
+mock.onDelete(/\/api\/consumer\/\d+?/).reply(function(config){
+    const id= config.url.split('/').slice(3)[0];
+    consumers=consumers.filter(x => x.id !== parseInt(id));
+    return [200, {success:true}];
+});

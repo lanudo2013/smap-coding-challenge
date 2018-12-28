@@ -13,8 +13,10 @@ module.exports = {
         app: './src/main.js',
     },
     plugins: [
-        //new webpack.HashedModuleIdsPlugin(),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        /*new webpack.ProvidePlugin({
+            d3: ['d3']
+        }),*/
 
     ],
     resolve: {
@@ -30,18 +32,23 @@ module.exports = {
     module:{
         rules:[
 
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: [
-                    'file-loader'
-                ]
-            },
+
             {
                 test:  /\.vue$/,
                 use: [
                     'vue-loader'
                 ]
             },
+            /*{
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['babel-preset-env']
+                    }
+                }
+            }*/
             /*{
                 test: /\.json$/,
                 use: ['raw-loader']
