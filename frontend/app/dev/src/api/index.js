@@ -18,10 +18,12 @@ export const createConsumer = (name, consumer_type) => {
 
 }
 
+export const consumerTypes = [
+    {id: 'low', label: 'LABEL.CONSUMERTYPE.LOW'},
+    {id: 'high', label: 'LABEL.CONSUMERTYPE.HIGH'},
+    {id: 'extra_high', label: 'LABEL.CONSUMERTYPE.EXTRAHIGH'}
+];
+
 export const getConsumerTypes = () => {
-    return Promise.resolve([
-        {id: 'low', label: 'LABEL.CONSUMERTYPE.LOW'},
-        {id: 'high', label: 'LABEL.CONSUMERTYPE.HIGH'},
-        {id: 'extra_high', label: 'LABEL.CONSUMERTYPE.EXTRAHIGH'}
-    ])
+    return Promise.resolve(consumerTypes);
 }

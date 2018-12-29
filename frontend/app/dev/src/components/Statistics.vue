@@ -129,8 +129,9 @@
                 return this.years.filter(x=>x.selected);
             },
             consumers(){
-
-                return this.$store.getters.consumers;
+                let list = this.$store.getters.consumers;
+                list.sort((x,y) => (x.name||'').toLowerCase().localeCompare((y.name+'').toLowerCase()));
+                return list;
             },
 
             consumerTypes(){
@@ -183,6 +184,7 @@
                 if (this.selectedConsumer && this.yearsSelected.length>0){
                     this.loading=true;
                     d3.select("svg").remove();
+                    d3.select(".tooltip").remove();
                     this.$store.dispatch('getStatistics', {
                         selectedConsumer: this.selectedConsumer,
                         years: this.yearsSelected.length === this.years.length ? null: this.yearsSelected.map(x => x.name)
@@ -194,6 +196,7 @@
             setupChart(){
                 this.loading=false;
                 d3.select("svg").remove();
+                d3.select(".tooltip").remove();
                 if (this.statistics.length==0){
                     this.isChart=false;
                     return;
@@ -242,6 +245,14 @@
 
                 const that=this;
 
+                // Define the div for the tooltip
+                const div = d3.select("#chart").append("div")
+                    .attr("class", "tooltip")
+                    .style('background-color', 'white')
+                    .style('border', 'black solid 2px')
+                    .style('font-size', '10px')
+                    .style("opacity", 0);
+
                 svg.append("g")
                     .selectAll("g")
                     .data(data)
@@ -272,6 +283,20 @@
                     .attr("width", x1.bandwidth())
                     .attr("height", function(d) {
                         return that.chartHeight - y(d);
+                    })
+                    .on('mouseover', function(value,index,x,y,z){
+                        const d3Aux=d3;
+                        div.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                        div	.html('<span><b>'+x1Dom[index]+':</b> $'+parseFloat(value).toFixed(2)+'</span>')
+                            .style("left", (d3Aux.event.pageX-40) + "px")
+                            .style("top", (d3Aux.event.pageY-80) + "px");
+                    })
+                    .on('mouseout', function(){
+                        div.transition()
+                            .duration(200)
+                            .style("opacity", 0);
                     })
                 ;
 
@@ -371,7 +396,7 @@
     }
     .general-data{
         margin-bottom: 2px ;
-        margin-top: 30px;
+        margin-top: 22px;
     }
 
     .value{

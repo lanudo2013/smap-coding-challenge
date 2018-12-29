@@ -25,7 +25,7 @@ Vue.use(FormCheckbox);
 
 
 if (process.env.NODE_ENV === 'development') {
-    require('./http-mocks');
+    require('./mocks/http-mocks');
 }
 
 /* eslint-disable no-new */

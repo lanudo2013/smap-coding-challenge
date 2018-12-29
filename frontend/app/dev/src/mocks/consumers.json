@@ -1,0 +1,51 @@
+[{
+    "id": 1,
+    "name": "Jim Bond",
+    "consumer_type": "extra_high"
+  },
+  {
+    "id": 2,
+    "name": "Dianne King",
+    "consumer_type": "high"
+  },
+  {
+    "id": 3,
+    "name": "Julia Miller",
+    "consumer_type": "low"
+  },
+  {
+    "id": 4,
+    "name": "Cameron Hamilton",
+    "consumer_type": "low"
+  },
+  {
+    "id": 5,
+    "name": "Rose Martin",
+    "consumer_type": "low"
+  },
+  {
+    "id": 6,
+    "name": "John Oliver",
+    "consumer_type": "low"
+  },
+  {
+    "id": 7,
+    "name": "Adam Oliver",
+    "consumer_type": "low"
+  },
+  {
+    "id": 8,
+    "name": "Dianne Rees",
+    "consumer_type": "extra_high"
+  },
+  {
+    "id": 9,
+    "name": "Charles Walsh",
+    "consumer_type": "low"
+  },
+  {
+    "id": 10,
+    "name": "Mary Hamilton",
+    "consumer_type": "low"
+  }
+]
