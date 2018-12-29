@@ -8,7 +8,8 @@ export const store = new Vuex.Store({
     state:{
         consumers: [],
         consumerTypes: [],
-        consumerTypeFilter: ''
+        consumerTypeFilter: '',
+        statistics:[]
     },
     mutations: {
         changeConsumers(state, consumers) {
@@ -19,16 +20,23 @@ export const store = new Vuex.Store({
         },
         changeConsumerTypeFilter(state, type){
             state.consumerTypeFilter=type;
+        },
+        changeStatistics(state, list){
+            state.statistics=list;
         }
     },
     actions: {
-      getConsumers(params){
-          const {commit}= params;
-          const type = params.getters.consumerTypeFilter;
-          return axios.get('/api/consumers/'+ (type != null && type !== '' ? type : ''))
-              .then(response => response.data)
-              .then(data => commit('changeConsumers', data))
-      },
+        getConsumers(params, type){
+              const {commit}= params;
+              if (type == null){
+                  type = params.getters.consumerTypeFilter;
+              }else{
+                  commit('changeConsumerTypeFilter', type)
+              }
+              return axios.get('/api/consumers/'+ (type != null && type !== '' ? type : ''))
+                  .then(response => response.data)
+                  .then(data => commit('changeConsumers', data))
+        },
         getConsumerTypes({commit}){
             return Promise.resolve([
                 {id: 'low', label: 'LABEL.CONSUMERTYPE.LOW'},
@@ -47,28 +55,28 @@ export const store = new Vuex.Store({
             //axios(options);
             return axios(options)
                 .then(response => response.data)
-                .then(data => {
-                    if(data.success){
-                        return primitives.dispatch('getConsumers');
-                    }
-                })
-                .catch(error => {
+                .catch(() => {
                 })
         },
         removeConsumer(primitives, payload){
             return axios.delete('/api/consumer/'+payload.id)
                 .then(response => response.data)
-                .then(data => {
-                    if(data.success){
-                        return primitives.dispatch('getConsumers');
-                    }
+
+        },
+        getStatistics(primitives, payload){
+            return axios.get('/api/monthly_statistics/'+payload.selectedConsumer,
+                            payload.years? {params: {year: payload.years[0]}} : null)
+                .then(response => response.data)
+                .then((data) => {
+                    primitives.commit('changeStatistics', data)
                 })
         }
     },
     getters: {
         consumers: state => state.consumers,
         consumerTypes: state => state.consumerTypes,
-        consumerTypeFilter: state => state.consumerTypeFilter
+        consumerTypeFilter: state => state.consumerTypeFilter,
+        statistics: state => state.statistics
     }
 
 });

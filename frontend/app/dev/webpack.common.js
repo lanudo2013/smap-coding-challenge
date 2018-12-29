@@ -13,10 +13,7 @@ module.exports = {
         app: './src/main.js',
     },
     plugins: [
-        new VueLoaderPlugin(),
-        /*new webpack.ProvidePlugin({
-            d3: ['d3']
-        }),*/
+        new VueLoaderPlugin()
 
     ],
     resolve: {
@@ -31,55 +28,16 @@ module.exports = {
 
     module:{
         rules:[
-
-
             {
                 test:  /\.vue$/,
                 use: [
-                    'vue-loader'
-                ]
-            },
-            /*{
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['babel-preset-env']
-                    }
-                }
-            }*/
-            /*{
-                test: /\.json$/,
-                use: ['raw-loader']
-            },*/
-           /* {
-                test:  /\.scss$/,
-                use: [
-                    'vue-style-loader',
-                    'css-loader',
                     {
-                        loader: 'sass-loader',
-                        options: {
-                            indentedSyntax: true
-                        }
+                        loader: 'vue-loader'
                     }
-                ]
-            }*/
+                ],
 
-        ]
-    },
-    /*vue:{
-        loaders: [
-            'vue-style-loader',
-            'css-loader',
-            {
-                loader: 'sass-loader',
-                options: {
-                    indentedSyntax: true
-                }
             }
         ]
-    }
-   */
+    },
+
 };

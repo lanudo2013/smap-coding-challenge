@@ -29,6 +29,37 @@ module.exports=merge(common, {
     module:{
         rules:[
             {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: "css-loader"
+                    }
+                ]
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    {
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            importLoaders: 1,
+                        }
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+
+
+                ]
+            },
+            {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 use: [
                     'file-loader'
@@ -48,26 +79,11 @@ module.exports=merge(common, {
                 ]
             },
             {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    "style-loader", // creates style nodes from JS strings
-                    "css-loader", // translates CSS into CommonJS
-                    {
-                        loader:"sass-loader",
-                        options:{
-                            sourceMap: true,
-                        },
-
-                    } // compiles Sass to CSS, using Node Sass by default
-                ]
-            },
+                enforce: 'pre',
+                test: /\.(js|vue)$/,
+                loader: 'eslint-loader',
+                exclude: /node_modules/
+            }
         ]
     },
     optimization: {

@@ -1,0 +1,47 @@
+{
+  "plugins":["vue"],
+  "extends": [
+      "eslint:recommended",
+      "plugin:vue/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "parser": "babel-eslint",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true,
+      "jsx": false
+    }
+  },
+  "rules":{
+    "no-unused-vars": 1,
+    "vue/require-v-for-key":0,
+    "vue/component-name-in-template-casing":0
+  },
+  "globals": { "document":false, "window":false, "setTimeout":false, "clearTimeout":false, "process":false, "module":false, "jest":false,
+  "console": false, "Promise":false },
+  "env":{
+      "es6":true,
+      "jest": true
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.js"
+      ],
+      "env":{
+        "jest":true
+      },
+
+      "plugins": ["jest"],
+      "rules": {
+        "jest/no-disabled-tests": "warn",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error",
+        "no-console": "warn"
+      }
+    }
+  ]
+}

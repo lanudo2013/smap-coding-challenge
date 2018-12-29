@@ -1,143 +1,246 @@
 <template>
-    <div class="consumers col-lg-8 offset-lg-2">
-        <h1 class="title">Consumers</h1>
-        <button type="button" class="btn btn-default btn-lg btn-primary add-consumer" @click="addConsumer()"
-                :disabled="editing.id!=null">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{$t('LABEL.CONSUMER.ADD')}}
-        </button>
+  <div class="consumers col-lg-8 offset-lg-2">
+    <h1 class="title">
+      Consumers
+    </h1>
+    <button
+      type="button"
+      class="btn btn-default btn-lg btn-primary add-consumer"
+      :disabled="editing.id!=null || consumersInProgress"
+      @click="addConsumer()"
+    >
+      <span
+        class="glyphicon glyphicon-plus"
+        aria-hidden="true"
+      /> {{ $t('LABEL.CONSUMER.ADD') }}
+    </button>
 
-        <div class="form-group ">
-            <label for="consumerTypeFilter">{{$t('LABEL.CONSUMERTYPE.FILTER')}}</label>
-            <select class="form-control consumer-type-filter" id="consumerTypeFilter"
-                    v-model="consumerTypeFilter">
-                <option value="">{{$t('LABEL.CONSUMERTYPE.ALL')}}</option>
-                <option v-for="(ctype,key) in consumerTypes" :value="key">{{$t(ctype)}}</option>
-            </select>
-            
-        </div>
+    <div class="form-group ">
+      <label for="consumerTypeFilter">
+        {{ $t('LABEL.CONSUMERTYPE.FILTER') }}
+      </label>
+      <select
+        id="consumerTypeFilter"
+        v-model="consumerTypeFilter"
+        class="form-control consumer-type-filter"
+      >
+        <option value="">
+          {{ $t('LABEL.CONSUMERTYPE.ALL') }}
+        </option>
+        <option
+          v-for="(ctype,key) in consumerTypes"
+          :value="key"
+        >
+          {{ $t(ctype) }}
+        </option>
+      </select>
+    </div>
 
-        <table class="table table-striped table-bordered">
+    <div v-if="!consumersInProgress">
+          <table class="table table-striped table-bordered">
             <thead>
-            <tr>
-                <th scope="col" width="40%">{{$t('LABEL.CONSUMER.HEADER.NAME')}}</th>
-                <th scope="col" width="40%">{{$t('LABEL.CONSUMER.HEADER.TYPE')}}</th>
-                <th scope="col" width="20%">{{$t('LABEL.CONSUMER.HEADER.ACTIONS')}}</th>
+            <tr class="headers-row">
+              <th scope="col">
+                {{ $t('LABEL.CONSUMER.HEADER.NAME') }}
+              </th>
+              <th scope="col">
+                {{ $t('LABEL.CONSUMER.HEADER.TYPE') }}
+              </th>
+              <th scope="col">
+                {{ $t('LABEL.CONSUMER.HEADER.ACTIONS') }}
+              </th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="item in list">
-                <td scope="row">
-                    <span v-if="editing.id!==item.id">{{item.name}}</span>
-                    <div v-if="editing.id==item.id">
-                        <input  type="text" v-model="item.name" :placeholder="$t('LABEL.CONSUMER.FULLNAME')"
-                                class="form-control consumer-control" required
-                                :class="{'is-invalid': item.errors && item.errors.name}"
-                                @input="changeName(item)"
-                        />
-                        <span class="error text-danger"
-                              v-if="item.errors && item.errors.name && item.errors.name.required">
-                            {{$t('LABEL.NAME.ERROR.REQUIRED')}}
-                        </span>
-
-                    </div>
-
-                </td>
-                <td>
-                    <span v-if="editing.id!==item.id">{{getType(item.consumer_type)}}</span>
-                    <div v-if="editing.id===item.id">
-                        <select v-model="item.consumer_type" class="form-control consumer-control"
-                                :class="{'is-invalid': item.errors && item.errors.consumer_type}"
-                                @change="changeType(item)"
-                        >
-                            <option value="">{{$t('LABEL.CONSUMERTYPE.NOOPTION')}}</option>
-                            <option v-for="(ctype,key) in consumerTypes" :value="key">{{$t(ctype)}}</option>
-                        </select>
-                        <span class="error text-danger"
-                              v-if="item.errors && item.errors.consumer_type && item.errors.consumer_type.required">
-                            {{$t('LABEL.CONSUMERTYPE.ERROR.REQUIRED')}}
-                        </span>
-                    </div>
-
-
-                </td>
-                <td>
-
-
-                    <button type="button" class="btn btn-default btn-lg " @click="save(item)" :disabled="!canSave(item)"  v-if="editing.id===item.id">
-                        <span class="glyphicon glyphicon-saved save" data-toggle="tooltip" title="Save"  ></span>
-                    </button>
-
-
-                    <span class="icon-separator"></span>
-
-                    <button type="button" class="btn btn-default btn-lg " @click="showPrompt(item)"
-                            :disabled="editing.id!=null&&editing.id!==item.id"
-                            v-if="editing.id!==item.id"
-                            data-target="#deleteModal"
+              <td scope="row">
+                <span v-if="editing.id!==item.id">
+                  {{ item.name }}
+                </span>
+                <div v-if="editing.id==item.id">
+                  <input
+                          v-model="item.name"
+                          type="text"
+                          :placeholder="$t('LABEL.CONSUMER.FULLNAME')"
+                          class="form-control consumer-control"
+                          required
+                          :class="{'is-invalid': item.errors && item.errors.name}"
+                          @input="changeName(item)"
+                  >
+                  <span
+                          v-if="item.errors && item.errors.name && item.errors.name.required"
+                          class="error text-danger"
+                  >
+                    {{ $t('LABEL.NAME.ERROR.REQUIRED') }}
+                  </span>
+                </div>
+              </td>
+              <td>
+                <span v-if="editing.id!==item.id">
+                  {{ getType(item.consumer_type) }}
+                </span>
+                <div v-if="editing.id===item.id">
+                  <select
+                          v-model="item.consumer_type"
+                          class="form-control consumer-control"
+                          :class="{'is-invalid': item.errors && item.errors.consumer_type}"
+                          @change="changeType(item)"
+                  >
+                    <option value="">
+                      {{ $t('LABEL.CONSUMERTYPE.NOOPTION') }}
+                    </option>
+                    <option
+                            v-for="(ctype,key) in consumerTypes"
+                            :value="key"
                     >
-                        <span class="glyphicon glyphicon-trash remove" data-toggle="tooltip" title="Remove"></span>
-                    </button>
-                    <button type="button" class="btn btn-default btn-lg " @click="cancel(item)"  v-if="editing.id===item.id">
-                        <span class="glyphicon glyphicon-remove remove" data-toggle="tooltip" title="Cancel"></span>
+                      {{ $t(ctype) }}
+                    </option>
+                  </select>
+                  <span
+                          v-if="item.errors && item.errors.consumer_type && item.errors.consumer_type.required"
+                          class="error text-danger"
+                  >
+                    {{ $t('LABEL.CONSUMERTYPE.ERROR.REQUIRED') }}
+                  </span>
+                </div>
+              </td>
+              <td>
+                <template v-if="!actionInProgress || editing.id!==item.id">
+                    <button
+                            v-if="editing.id===item.id"
+                            type="button"
+                            class="btn btn-default btn-lg "
+                            :disabled="!canSave(item)"
+                            @click="save(item)"
+                    >
+                    <span
+                            class="glyphicon glyphicon-saved action-button save"
+                            data-toggle="tooltip"
+                            title="Save"
+                    />
                     </button>
 
-                </td>
+
+                    <span class="icon-separator" />
+
+                    <button
+                            v-if="editing.id!==item.id"
+                            type="button"
+                            class="btn btn-default btn-lg "
+                            :disabled="(editing.id!=null&&editing.id!==item.id)||actionInProgress"
+                            data-target="#deleteModal"
+                            @click="showPrompt(item)"
+                    >
+                    <span
+                            class="glyphicon glyphicon-trash action-button remove"
+                            data-toggle="tooltip"
+                            title="Remove"
+                    />
+                    </button>
+                    <button
+                            v-if="editing.id===item.id"
+                            type="button"
+                            class="btn btn-default btn-lg "
+                            @click="cancel(item)"
+                    >
+                    <span
+                            class="glyphicon glyphicon-remove action-button remove"
+                            data-toggle="tooltip"
+                            title="Cancel"
+                    />
+                    </button>
+                </template>
+
+                <template v-if="actionInProgress && toRemoveItem.id===item.id">
+                    <div class="spinner-border text-primary actions-spinner" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                </template>
+
+              </td>
             </tr>
-
             </tbody>
-        </table>
+          </table>
 
-        <b-pagination size="lg" @change="changePage" :total-rows="consumers.length"
-                      v-model="currentPage" :per-page="pageSize"></b-pagination>
-
-
-        <div>
-            <!-- Modal Component -->
-            <b-modal id="modal1" :title="$t('LABEL.CONSUMER.DELETE.MODAL.TITLE')" ref="modalRef" @ok="remove(item)"
-                     @cancel="cancelPrompt()">
-                <p >{{$t('LABEL.CONSUMER.DELETE.MODAL.MESSAGE')}}</p>
-
-            </b-modal>
-        </div>
-
-
-
-
+          <b-pagination
+                  v-model="currentPage"
+                  size="lg"
+                  :total-rows="consumers.length"
+                  :per-page="pageSize"
+                  @change="changePage"
+          />
     </div>
 
+    <div v-if="consumersInProgress">
+      <div class="spinner-border text-primary consumers-spinner" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+
+
+    <div>
+      <!-- Modal Component -->
+      <b-modal
+        id="modal1"
+        ref="modalRef"
+        :title="$t('LABEL.CONSUMER.DELETE.MODAL.TITLE')"
+        @ok="remove(item)"
+        @cancel="cancelPrompt()"
+      >
+        <p>{{ $t('LABEL.CONSUMER.DELETE.MODAL.MESSAGE') }}</p>
+      </b-modal>
+    </div>
+  </div>
 </template>
 
 <script>
-    //import bModal from 'bootstrap-vue/es/components/modal/modal'
-   // import bPagination from 'bootstrap-vue/es/components/pagination/pagination'
-
     const emptyRow= {id: null};
     export default {
-        name: "consumers",
+        name: "Consumers",
         data(){
           return {
               editing: emptyRow,
               editingNew: false,
               consumerTypeFilter:'',
               list: [],
+              consumersInProgress:false,
+              actionInProgress: false,
               toRemoveItem:null,
               currentPage:1,
-              pageSize: 5
+              pageSize: 10
           }
+        },
+        computed: {
+            consumers(){
+                return this.$store.getters.consumers;
+            },
+            consumerTypes(){
+                const list = this.$store.getters.consumerTypes;
+                return list.reduce((prev,curr) => {
+                    prev[curr.id] = curr.label;
+                    return prev;
+                },{})
+            }
         },
         watch: {
           consumerTypeFilter(newValue){
               this.editing=emptyRow;
               this.editingNew=false;
               this.currentPage=1;
-              this.$store.commit('changeConsumerTypeFilter',newValue);
-              this.$store.dispatch('getConsumers').then(() => this.updateList());
+              this.consumersInProgress=true;
+              this.$store.dispatch('getConsumers',newValue ).then(() => this.updateList());
           }
         },
+
+
+
+        mounted() {
+            this.getConsumers();
+            this.$store.dispatch('getConsumerTypes');
+        },
         methods:{
-            updateList(){
-                this.list=[].concat(this.consumers).splice((this.currentPage-1)*this.pageSize, this.pageSize);
-            },
+
             changePage(newPage){
                 this.list=[].concat(this.consumers).splice((newPage-1)*this.pageSize, this.pageSize);
             },
@@ -170,10 +273,12 @@
 
 
                 if (this.canSave(item)){
+                    this.actionInProgress=true;
                     this.$store.dispatch('createConsumer', {name:item.name, consumer_type:item.consumer_type,
                                     consumer_type_filter: this.consumerTypeFilter
                     }).then(() => {
-                        this.updateList()
+                        this.actionInProgress=false;
+                        this.getConsumers();
                         this.cancel();
                     });
                 }else{
@@ -197,12 +302,14 @@
             },
             remove(){
                 let item = this.toRemoveItem;
+                this.actionInProgress=true;
                this.$store.dispatch('removeConsumer', {
                    id: item.id,
                    consumer_type_filter: this.consumerTypeFilter
                }).then(() => {
 
-                   this.updateList()
+                   this.actionInProgress=false;
+                   this.getConsumers();
                    this.cancelPrompt();
                });
             },
@@ -213,67 +320,107 @@
                 this.list = this.list.filter(x => x.id>=0 && x.id!=null);
                 this.editing=emptyRow;
                 this.editingNew=false;
-            }
-        },
-        computed: {
-            consumers(){
-                return this.$store.getters.consumers;
             },
-            consumerTypes(){
-                const list = this.$store.getters.consumerTypes;
-                return list.reduce((prev,curr) => {
-                    prev[curr.id] = curr.label;
-                    return prev;
-                },{})
-            }
-        },
 
-        mounted() {
-            this.$store.dispatch('getConsumers').then(_ => this.updateList());
-            this.$store.dispatch('getConsumerTypes');
+            getConsumers(){
+                this.consumersInProgress=true;
+                this.$store.dispatch('getConsumers').then(() => this.updateList());
+            },
+            updateList(){
+                this.consumersInProgress=false;
+                this.list=[].concat(this.consumers).splice((this.currentPage-1)*this.pageSize, this.pageSize);
+            },
         }
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    @import '../assets/variables';
+
     .add-consumer{
-        margin-bottom: 2%;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+    .consumers-spinner{
+      margin-top:10px;
+      width: 50px; height: 50px
+    }
+    .actions-spinner{
+      width: 30px; height: 30px
     }
     .refresh{
         color: #2e5cd2;
-        font-size: 16px;
+        font-size: $bodyFontSize;
+
+        @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
+            font-size: $bodyFontSize/1.2;
+        }
     }
     .consumer-type-filter{
         width:40%;
         display:inline-block;
         margin-left: 8px;
-        font-size: 12px;
+        font-size: $bodyFontSize - 1;
+        @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
+            font-size: $bodyFontSize/1.2;
+        }
+
 
     }
     .consumer-control{
-        font-size: 14px;
+        font-size: $bodyFontSize;
         height: fit-content;
+
+        @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
+            font-size: $bodyFontSize/1.2;
+        }
     }
-    .edit{
-        color: #ff9a39;
+    .action-button{
         font-size: 2.4vh;
         cursor: pointer;
     }
     .save{
         color: #1ca127;
-        font-size: 2.4vh;
-        cursor: pointer;
+        @extend .action-button;
     }
     .remove{
         color: #d20d17;
-        font-size: 2.4vh;
-        cursor: pointer;
+        @extend .action-button;
     }
     .icon-separator{
         margin: 0 3px 3px 0;
     }
     .consumers{
         margin-top: 3%;
+        font-size: $bodyFontSize;
+
+        @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
+            font-size: $bodyFontSize/1.2;
+        }
+
+
+    }
+    .headers-row{
+        * {
+            width: 40%;
+            @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
+                width: 35%;
+            }
+        }
+
+        :last-child{
+            width: 20%;
+            @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
+                width: 30%;
+            }
+        }
+
+    }
+
+    td{
+        @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
+            padding: 0.25rem;
+        }
     }
 
 

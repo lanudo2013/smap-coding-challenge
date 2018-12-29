@@ -3,12 +3,11 @@ import App from "./App";
 import {store} from './store/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/glyphicons.css';
-//import './d3/d3';
 import Router from './router';
 import VueI18n from 'vue-i18n'
 import I18NLocales from './i18n'
-import { Pagination , Modal } from 'bootstrap-vue/es/components';
-import './assets/custom.css';
+import { Pagination , Modal,FormCheckbox } from 'bootstrap-vue/es/components';
+import './assets/custom.scss';
 
 //internationalization
 Vue.use(VueI18n)
@@ -22,6 +21,7 @@ Vue.config.lang = I18NLocales.locale;
 // bootstrap vue
 Vue.use(Pagination);
 Vue.use(Modal);
+Vue.use(FormCheckbox);
 
 
 if (process.env.NODE_ENV === 'development') {

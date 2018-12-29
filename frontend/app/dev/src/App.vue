@@ -1,38 +1,55 @@
 <template>
-    <div id="app-main" class="col-12">
-        <!--img src="./assets/logo.png"-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div
+    id="app-main"
+    class="col-12"
+  >
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+          <li
+            class="nav-item"
+            :class="{'active': $route.path==='/home'}"
+          >
+            <RouterLink to="/home">
+              <a class="nav-link ">
+                Home
+              </a>
+            </RouterLink>
+          </li>
+          <li
+            class="nav-item"
+            :class="{'active': $route.path==='/consumers'}"
+          >
+            <RouterLink to="/consumers">
+              <a class="nav-link">
+                Consumers
+              </a>
+            </RouterLink>
+          </li>
+          <li
+            class="nav-item"
+            :class="{'active': $route.path==='/statistics'}"
+          >
+            <RouterLink to="/statistics">
+              <a class="nav-link">
+                Statistics
+              </a>
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-            <div class="collapse navbar-collapse" >
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <router-link  to="/consumers">
-                            <a class="nav-link" >Consumers</a>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link  to="/statistics">
-                            <a class="nav-link" >Statistics</a>
-                        </router-link>
-                    </li>
 
-                </ul>
-
-            </div>
-        </nav>
-
-
-        <div class="col-lg-12">
-            <transition name="fade" mode="out-in">
-            <router-view></router-view>
-            </transition>
-        </div>
-
-
+    <div class="col-lg-12">
+      <Transition
+        name="fade"
+        mode="out-in"
+      >
+        <RouterView />
+      </Transition>
     </div>
+  </div>
 </template>
 
 <script>
@@ -42,19 +59,29 @@
         name: "App",
         components: {
         }
-    };//lang="scss" type="text/scss"
+    };
 </script>
 
-<style >
+<style lang="scss">
+    @import './assets/variables';
+
     #app-main {
         font-family: "Avenir", Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
 
+    }
 
+    .active{
+        background-color: #ff933c;
+    }
+    .navbar{
+        padding: 0 !important;
+    }
+    .nav-link{
+        padding: 1rem 2rem !important;
     }
 
     .fade-enter-active, .fade-leave-active {

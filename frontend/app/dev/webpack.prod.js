@@ -51,8 +51,9 @@ module.exports = merge(common, {
     ],
     module:{
         rules:[
+
             {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
                 use: [
                     {
                         loader: "file-loader",
@@ -81,20 +82,21 @@ module.exports = merge(common, {
                 test: /\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader,
-                    'css-loader'
+                    {
+                        loader: "css-loader"
+                    }
                 ]
             },
             {
                 test: /\.scss$/,
                 use: [
-                    // fallback to style-loader in development
                     {
                         loader: MiniCssExtractPlugin.loader,
                     },
                     {
                         loader: "css-loader",
                         options: {
-                            sourceMap: true
+                            importLoaders: 1,
                         }
                     },
                     {
