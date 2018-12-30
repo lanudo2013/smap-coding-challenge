@@ -22,11 +22,11 @@ It was used NPM (Node Package Manager) as the dependency management tool. The ap
 ## Decisions made
 
 1-	In both components, consumer Ids are displayed to make the difference between two consumers created with the same name and consumer type.  
-2-	In consumers component, frontend pagination was added to display a pages of records. 
+2-	In consumers component, frontend pagination was added to display a pages of records.
 3-	I18n was added to enable labels internationalization capability across the app.
 
 ## Testing
 
-Tests are placed under the __test__ folder. There is one test for each component and an extra test for the vuex store.
+Tests are placed under the `__test__` folder. There is one test for each component and an extra test for the vuex store. Test files: `Statistics.test.js`, `Consumers.test.js` and `Store.test.js`;
 
 
