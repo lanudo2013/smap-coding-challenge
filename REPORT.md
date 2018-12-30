@@ -19,14 +19,20 @@ It was used NPM (Node Package Manager) as the dependency management tool. The ap
 * **D3**. Data visualization tool used to render statistics data in the statistics component.
 * **Webpack 4**. Module bundler and packetization tool. There are two important files for webpack: webpack.dev.js which defines the configuration for development environment; and webpack.prod.js, which defines the configuration for the production environment. Both files import a common configuration of webpack.common.js. The production environment allows to generate all the required resources. These resources are placed under the static folder and are referenced by the base.html file.
 
+The app was developed in `Chrome` browser.
+
 ## Decisions made
 
 1-	In both components, consumer Ids are displayed to make the difference between two consumers created with the same name and consumer type.  
-2-	In consumers component, frontend pagination was added to display a pages of records.
+2-	In consumers component, frontend pagination was added to display a pages of records.  
 3-	I18n was added to enable labels internationalization capability across the app.
+
+## Cross browser compatibility
+
+The app was tested in the following browsers: Internet Explorer 11, Firefox 64 and Chrome 71.
 
 ## Testing
 
-Tests are placed under the `__test__` folder. There is one test for each component and an extra test for the vuex store. Test files: `Statistics.test.js`, `Consumers.test.js` and `Store.test.js`;
+Tests are placed under the `\_\_test\_\_` folder. There is one test for each component and an extra test for the vuex store. Test files: `Statistics.test.js`, `Consumers.test.js` and `Store.test.js`;
 
 
