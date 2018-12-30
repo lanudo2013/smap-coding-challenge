@@ -60,7 +60,7 @@
               class="consumer-row"
               >
               <td scope="row">
-                <span>
+                <span v-if="item.id!=null&&item.id>=0">
                   {{ item.id }}
                 </span>
               </td>
@@ -118,7 +118,8 @@
                 </div>
               </td>
               <td>
-                <template v-if="!actionInProgress || editing.id!==item.id">
+                <template v-if="!actionInProgress || (editing.id!=null&&editing.id!==item.id) ||
+                                  (toRemoveItem&&toRemoveItem.id!==item.id)">
                     <button
                             v-if="editing.id===item.id"
                             type="button"
@@ -163,7 +164,7 @@
                     </button>
                 </template>
 
-                <template v-if="actionInProgress && toRemoveItem.id===item.id">
+                <template v-if="actionInProgress && ((toRemoveItem && toRemoveItem.id===item.id) || editing.id===item.id)">
                   <div
                   class="spinner-border text-primary actions-spinner"
                   role="status"
@@ -206,7 +207,7 @@
         id="modal1"
         ref="modalRef"
         :title="$t('LABEL.CONSUMER.DELETE.MODAL.TITLE')"
-        @ok="remove(item)"
+        @ok="remove()"
         @cancel="cancelPrompt()"
       >
         <p>{{ $t('LABEL.CONSUMER.DELETE.MODAL.MESSAGE') }}</p>
@@ -381,7 +382,7 @@
         width:40%;
         display:inline-block;
         margin-left: 8px;
-        font-size: $bodyFontSize - 1;
+        font-size: $bodyFontSize - 2;
         @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
             font-size: $bodyFontSize/1.2;
         }

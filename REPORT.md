@@ -24,8 +24,8 @@ The app was developed in `Chrome` browser.
 ## Decisions made
 
 1-	In both components, consumer Ids are displayed to make the difference between two consumers created with the same name and consumer type.  
-2-	In consumers component, frontend pagination was added to display a pages of records.  
-3-	I18n was added to enable labels internationalization capability across the app.
+2-	In consumers component, frontend pagination was added to display pages of records.  
+3-	I18n was added to enable internationalization capability across the app.
 
 ## Cross browser compatibility
 
