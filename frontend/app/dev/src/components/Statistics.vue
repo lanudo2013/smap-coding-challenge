@@ -12,7 +12,10 @@
         >
           {{ $t('LABEL.STATISTICS.FORM.CONSUMER') }}:
         </label>
-        <div class="col-lg-5 col-md-5 col-sm-10  col-xl-5 loading" v-if="loadingConsumers">
+        <div
+            v-if="loadingConsumers"
+            class="col-lg-5 col-md-5 col-sm-10  col-xl-5 loading"
+            >
           <div v-if="loadingConsumers">
             <label
                     class="col-form-label "
@@ -23,7 +26,10 @@
         </div>
 
 
-        <div class="col-lg-5 col-md-5 col-sm-10  col-xl-5" v-if="!loadingConsumers">
+        <div
+            v-if="!loadingConsumers"
+            class="col-lg-5 col-md-5 col-sm-10  col-xl-5"
+            >
           <select
             id="consumer"
             v-model="selectedConsumer"
@@ -63,9 +69,9 @@
           <div class="text-left">
             <div style="display: inline-block">
               <button
+                      id="generate-button"
                       type="button"
                       class="btn btn-default btn-lg btn-primary right"
-                      id="generate-button"
                       :disabled="!selectedConsumer || !years.some(x => x.selected) || loading"
                       @click="doRequestIfFilters()"
               >
@@ -77,7 +83,11 @@
             </div>
 
 
-            <div class="spinner-border text-primary spinner" role="status" v-if="loading"/>
+            <div
+                v-if="loading"
+                class="spinner-border text-primary spinner"
+                role="status"
+                />
           </div>
         </div>
       </div>
@@ -102,7 +112,7 @@
         {{ getType(consumerInfo.consumer_type) }}
       </span>
     </div>
-    <div id="chart" ></div>
+    <div id="chart" />
   </div>
 </template>
 

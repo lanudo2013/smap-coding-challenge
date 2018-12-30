@@ -41,6 +41,9 @@
             <thead>
             <tr class="headers-row">
               <th scope="col">
+                {{ $t('LABEL.CONSUMER.HEADER.ID') }}
+              </th>
+              <th scope="col">
                 {{ $t('LABEL.CONSUMER.HEADER.NAME') }}
               </th>
               <th scope="col">
@@ -52,7 +55,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in list" class="consumer-row">
+            <tr
+              v-for="item in list"
+              class="consumer-row"
+              >
+              <td scope="row">
+                <span>
+                  {{ item.id }}
+                </span>
+              </td>
               <td scope="row">
                 <span v-if="editing.id!==item.id">
                   {{ item.name }}
@@ -153,11 +164,15 @@
                 </template>
 
                 <template v-if="actionInProgress && toRemoveItem.id===item.id">
-                    <div class="spinner-border text-primary actions-spinner" role="status">
-                      <span class="sr-only">Loading...</span>
+                  <div
+                  class="spinner-border text-primary actions-spinner"
+                  role="status"
+                  >
+                      <span class="sr-only">
+                      Loading...
+                      </span>
                     </div>
                 </template>
-
               </td>
             </tr>
             </tbody>
@@ -173,8 +188,13 @@
     </div>
 
     <div v-if="consumersInProgress">
-      <div class="spinner-border text-primary consumers-spinner" role="status">
-        <span class="sr-only">Loading...</span>
+      <div
+        class="spinner-border text-primary consumers-spinner"
+        role="status"
+        >
+        <span class="sr-only">
+          Loading...
+          </span>
       </div>
     </div>
 
@@ -402,10 +422,14 @@
 
     }
     .headers-row{
+        :first-child{
+          width: 10%;
+        }
+
         * {
-            width: 40%;
+            width: 35%;
             @media #{$media} and #{$maxaspect}, #{$media} and (max-width: $max-width) {
-                width: 35%;
+                width: 30%;
             }
         }
 

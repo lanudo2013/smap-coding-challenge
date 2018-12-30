@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>404: Not Found</h1>
-    <span>Go to
+    <span>
+Go to
       <RouterLink to="/home">
         <a>
           home
@@ -9,7 +10,6 @@
       </RouterLink>
     </span>
   </div>
-
 </template>
 
 <script>

@@ -91,4 +91,5 @@ ENV/
 # Dev env
 frontend/app/dev/node_modules/
 .idea
+frontend/app/dev/package-lock.json
 .sqlite3
