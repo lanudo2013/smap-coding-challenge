@@ -52,7 +52,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in list">
+            <tr v-for="item in list" class="consumer-row">
               <td scope="row">
                 <span v-if="editing.id!==item.id">
                   {{ item.name }}
@@ -63,6 +63,7 @@
                           type="text"
                           :placeholder="$t('LABEL.CONSUMER.FULLNAME')"
                           class="form-control consumer-control"
+                          name="name"
                           required
                           :class="{'is-invalid': item.errors && item.errors.name}"
                           @input="changeName(item)"
@@ -83,6 +84,7 @@
                   <select
                           v-model="item.consumer_type"
                           class="form-control consumer-control"
+                          name="consumer_type"
                           :class="{'is-invalid': item.errors && item.errors.consumer_type}"
                           @change="changeType(item)"
                   >
@@ -109,7 +111,7 @@
                     <button
                             v-if="editing.id===item.id"
                             type="button"
-                            class="btn btn-default btn-lg "
+                            class="btn btn-default btn-lg save-consumer"
                             :disabled="!canSave(item)"
                             @click="save(item)"
                     >
@@ -126,9 +128,8 @@
                     <button
                             v-if="editing.id!==item.id"
                             type="button"
-                            class="btn btn-default btn-lg "
+                            class="btn btn-default btn-lg remove-consumer"
                             :disabled="(editing.id!=null&&editing.id!==item.id)||actionInProgress"
-                            data-target="#deleteModal"
                             @click="showPrompt(item)"
                     >
                     <span

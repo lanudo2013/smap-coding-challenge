@@ -36,7 +36,7 @@
               v-for="cons in consumers"
               :value="cons.id"
             >
-              {{ cons.name }}
+              {{ 'Id: '+cons.id + ', ' + cons.name }}
             </option>
           </select>
         </div>
@@ -65,6 +65,7 @@
               <button
                       type="button"
                       class="btn btn-default btn-lg btn-primary right"
+                      id="generate-button"
                       :disabled="!selectedConsumer || !years.some(x => x.selected) || loading"
                       @click="doRequestIfFilters()"
               >
@@ -169,7 +170,12 @@
         mounted(){
             this.loadingConsumers=true;
             this.$store.dispatch('getConsumers').then(() => this.loadingConsumers=false);
-            window.addEventListener('resize',this.setupChart)
+            window.addEventListener('resize',() => {
+                if (!this.loading){
+                    this.setupChart();
+                }
+
+            });
             this.$store.dispatch('getConsumerTypes');
 
         },
@@ -188,7 +194,7 @@
                     this.$store.dispatch('getStatistics', {
                         selectedConsumer: this.selectedConsumer,
                         years: this.yearsSelected.length === this.years.length ? null: this.yearsSelected.map(x => x.name)
-                    }).then(() => this.setupChart())
+                    }).then(this.setupChart)
                 }
 
 
@@ -284,7 +290,7 @@
                     .attr("height", function(d) {
                         return that.chartHeight - y(d);
                     })
-                    .on('mouseover', function(value,index,x,y,z){
+                    .on('mouseover', function(value,index){
                         const d3Aux=d3;
                         div.transition()
                             .duration(200)

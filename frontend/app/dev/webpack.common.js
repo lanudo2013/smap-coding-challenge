@@ -10,7 +10,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 module.exports = {
 
     entry: {
-        app: './src/main.js',
+        app: ['./src/main.js']
     },
     plugins: [
         new VueLoaderPlugin()
@@ -29,14 +29,22 @@ module.exports = {
     module:{
         rules:[
             {
-                test:  /\.vue$/,
+                test: /\.vue$/,
                 use: [
                     {
                         loader: 'vue-loader'
                     }
                 ],
-
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader'
+                }
             }
+
+
         ]
     },
 

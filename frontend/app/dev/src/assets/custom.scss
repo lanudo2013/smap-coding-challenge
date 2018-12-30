@@ -7,9 +7,13 @@ body{
     @media #{$media} and (max-width: $max-width) {
         font-size: $bodyFontSize - 2;
     }
-
-
 }
+
+a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+}
+
 
 
 

@@ -1,4 +1,4 @@
-const langFile = require('./en_US.json');
+const langFile = require('./en_UK.json');
 
 const locales = {
     en: langFile,

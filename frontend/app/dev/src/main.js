@@ -1,4 +1,6 @@
+
 import Vue from "vue";
+import 'es6-promise/auto'
 import App from "./App";
 import {store} from './store/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
