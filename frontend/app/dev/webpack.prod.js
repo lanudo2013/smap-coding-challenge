@@ -20,7 +20,6 @@ module.exports = merge(common, {
         chunkFilename: "[name].js",
         publicPath: '/static/'
     },
-    //recordsPath: path.join(__dirname, "./records.json"),
     optimization: {
         minimizer:[
             new OptimizeCSSAssetsPlugin({
@@ -44,9 +43,7 @@ module.exports = merge(common, {
             chunkFilename: '../css/[name].css'
         }),
         new MinifyPlugin(),
-       // new CleanWebpackPlugin([prefixPath+'js']),
-        //new CleanWebpackPlugin([prefixPath+'css']),
-       // new CleanWebpackPlugin([prefixPath+'assets']),
+        new CleanWebpackPlugin([prefixPath+'js',prefixPath+'css',prefixPath+'assets'], { allowExternal:true})
 
     ],
     module:{
