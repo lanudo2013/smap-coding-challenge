@@ -168,6 +168,8 @@
                     }))
                 }
 
+                list.forEach(x => x.calculated_profit = x.consumption - x.total_bill);
+
                 return list.sort(
                     (x,y) => x.month > y.month ? 1 : (y.month > x.month ? -1 : 0)
                 );
@@ -179,7 +181,7 @@
         },
         mounted(){
             this.loadingConsumers=true;
-            this.$store.dispatch('getConsumers').then(() => this.loadingConsumers=false);
+            this.$store.dispatch('getConsumers','').then(() => this.loadingConsumers=false);
             window.addEventListener('resize',() => {
                 if (!this.loading){
                     this.setupChart();
@@ -242,7 +244,8 @@
 
                 const x1Dom=[this.$t('LABEL.STATISTICS.YAXE.CONSUMPTION'),
                     this.$t('LABEL.STATISTICS.YAXE.TOTALBILL'),
-                    this.$t('LABEL.STATISTICS.YAXE.TOTALCOST')];
+                    this.$t('LABEL.STATISTICS.YAXE.TOTALCOST'),
+                    this.$t('LABEL.STATISTICS.YAXE.CALCULATEDPROFIT')];
 
                 let x1 = d3.scaleBand()
                     .range([0, x0.bandwidth()])
@@ -250,13 +253,15 @@
                     .padding(0.05);
 
                 const max=Math.max(Math.max.apply(null,data.map(x => x.consumption)),
-                    Math.max.apply(null,data.map(x => x.total_bill)), Math.max.apply(null,data.map(x => x.total_cost)));
+                    Math.max.apply(null,data.map(x => x.total_bill)), Math.max.apply(null,data.map(x => x.total_cost)),
+                    Math.max.apply(null,data.map(x => x.calculated_profit)));
+
                 let y = d3.scaleLinear()
                     .range([this.chartHeight, 0])
                     .domain([0, 1.1*max]).nice();
 
                 let z = d3.scaleOrdinal()
-                    .range(["#41c54d", "#ff9a39", "#2e5cd2"]);
+                    .range(["#811913", "#ff9a39", "#2e5cd2", '#00FF02']);
 
 
                 const that=this;
@@ -283,7 +288,8 @@
                         return [
                             d.consumption,
                             d.total_bill,
-                            d.total_cost
+                            d.total_cost,
+                            d.calculated_profit
                         ];
                     })
                     .enter().append("rect")
@@ -355,7 +361,7 @@
                         let lng= 0;
                         list.forEach(x => lng += x.length);
 
-                        return "translate(" + (lng*6 + i * 40 + 40) + ",0)";
+                        return "translate(" + (lng*4 + i * 40 + 40) + ",0)";
                     });
 
                 legend.append("rect")

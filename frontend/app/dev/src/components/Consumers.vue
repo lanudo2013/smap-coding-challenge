@@ -118,8 +118,10 @@
                 </div>
               </td>
               <td>
-                <template v-if="!actionInProgress || (editing.id!=null&&editing.id!==item.id) ||
-                                  (toRemoveItem&&toRemoveItem.id!==item.id)">
+                <template
+v-if="!actionInProgress || (editing.id!=null&&editing.id!==item.id) ||
+                                  (toRemoveItem&&toRemoveItem.id!==item.id)"
+>
                     <button
                             v-if="editing.id===item.id"
                             type="button"

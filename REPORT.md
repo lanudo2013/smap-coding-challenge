@@ -4,7 +4,7 @@ This is the frontend coding challenge for my SMAP Energy Tech application. Below
 
 ## Directory structure
 
-A `dev` folder was added under frontend/app folder where there are all the source files needed for the app. The `static` folder holds all the generated resources.
+A `dev` folder was added under `frontend/app` folder where there are all the source files needed for the app. The `static` folder holds all the generated resources.
 
 ## Technical features
 
@@ -21,6 +21,25 @@ It was used NPM (Node Package Manager) as the dependency management tool. The ap
 
 The app was developed in `Chrome` browser.
 
+## Instructions to build and run the app
+
+### To build the app:
+
+1- Install latest version of Node Package Manager.  
+2- Open a terminal and point to the `dev` folder: `cd <root_smap_coding_challenge>/frontend/app/dev`.    
+3- Download project dependencies with command: `npm install`.  
+4- Execute command: `npm run build`.  
+5- Check if the resources were generated in `static` folder.  
+
+### To run the app:
+
+1- Install latest version of Node Package Manager.  
+2- Open a terminal and point to the `dev` folder: `cd <root_of_smap_coding_challenge>/frontend/app/dev`.   
+3- Download project dependencies with command: `npm install`.  
+4- Execute command: `npm run start`.  
+5- Open a browser and enter the url: http://localhost:8088. You will see a welcome page.
+
+
 ## Decisions made
 
 1-	In both components, consumer Ids are displayed to make the difference between two consumers created with the same name and consumer type.  
@@ -33,6 +52,16 @@ The app was tested in the following browsers: Internet Explorer 11, Firefox 64 a
 
 ## Testing
 
-Tests are placed under the `\_\_test\_\_` folder. There is one test for each component and an extra test for the vuex store. Test files: `Statistics.test.js`, `Consumers.test.js` and `Store.test.js`;
+Tests are placed under the `__tests__` folder. There is one test for each component and an extra test for the vuex store. Test files: `Statistics.test.js`, `Consumers.test.js` and `Store.test.js`;
 
+To run the tests, check the following steps:
+
+1- Install latest version of Node Package Manager.
+2- Open a terminal and point to the `dev` folder: `cd <root_of_smap_coding_challenge>/frontend/app/dev`.  
+3- Download project dependencies with command: `npm install`.
+4- Execute command: `npm run test`.
+
+## Future work
+
+As future work, I would setup a service worker to allow the client to access the site even though the server backend would not be running.
 
