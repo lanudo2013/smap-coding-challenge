@@ -10,7 +10,7 @@ pipeline {
       agent {
         docker {
           image 'node:7-alpine'
-          args '-v $(pwd)/frontend/app:/app'
+          args '-v frontend/app:/app'
         }
 
       }
