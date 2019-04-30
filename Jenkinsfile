@@ -11,12 +11,13 @@ pipeline {
         docker {
           image 'node:7-alpine'
           args '''-v 
-/var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/api:/app'''
+/var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app:/app'''
         }
 
       }
       steps {
         sh 'ls /app'
+        sh 'cd /app/dev'
         sh 'npm run build'
       }
     }
