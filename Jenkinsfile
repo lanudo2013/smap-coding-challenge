@@ -3,7 +3,7 @@ pipeline {
     docker {
       image 'node:8.16.0-alpine'
       args '''-v 
-/var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app:/app
+/var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app:/app,rslave  
 -v /var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app/dev/node_modules:/app/dev/node_modules
 -p 3000:8088'''
     }
