@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage('Checkout & Print files') {
       steps {
-        sh 'ls'
+        sh 'ls /app/dev'
       }
     }
     stage('Build') {
@@ -27,7 +27,6 @@ pipeline {
       }
       steps {
         sh 'ls /app/dev'
-        sh 'cd /app/dev'
         sh 'cd /app/dev && npm install'
       }
     }
