@@ -1,9 +1,21 @@
 pipeline {
   agent any
   stages {
-    stage('Print files') {
+    stage('Checkout & Print files') {
       steps {
         sh 'ls'
+      }
+    }
+    stage('Build') {
+      agent {
+        docker {
+          image 'node:7-alpine'
+          args '-v $(pwd)/frontend/app:/app'
+        }
+
+      }
+      steps {
+        sh 'npm run build'
       }
     }
   }
