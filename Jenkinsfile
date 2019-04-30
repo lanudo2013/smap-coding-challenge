@@ -6,7 +6,7 @@ pipeline {
 /var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app:/app
 -v /var/lib/jenkins/workspace/node_modules:/app/dev/node_modules
 -p
-3001:8088'''
+3000:8088'''
     }
 
   }
