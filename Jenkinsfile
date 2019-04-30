@@ -20,7 +20,7 @@ pipeline {
       steps {
         sh 'ls /app'
         sh 'cd /app/dev'
-        fileExists 'node_modules'
+        fileExists 'node_modules3'
         sh 'cd /app/dev && npm install'
       }
     }
