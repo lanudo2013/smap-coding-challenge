@@ -9,9 +9,9 @@ pipeline {
     stage('Build') {
       agent {
         docker {
-          image 'node:7-alpine'
           args '''-v 
 /var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app:/app'''
+          image 'node:8.16.0-alpine'
         }
 
       }
