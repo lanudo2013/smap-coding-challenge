@@ -10,7 +10,8 @@ pipeline {
       agent {
         docker {
           image 'node:7-alpine'
-          args '-v frontend/app:/app'
+          args '''-v 
+/var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/api:/app'''
         }
 
       }
