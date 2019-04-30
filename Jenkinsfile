@@ -39,7 +39,9 @@ pipeline {
     stage('Test') {
       agent {
         docker {
-          image 'nginx:alpine'
+          image 'nginx:latest'
+          args '''-p
+9000:80'''
         }
 
       }
