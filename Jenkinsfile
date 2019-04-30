@@ -18,7 +18,7 @@ pipeline {
       steps {
         sh 'ls /app'
         sh 'cd /app/dev'
-        sh 'cd /app/dev && npm run build'
+        sh 'cd /app/dev && npm install'
       }
     }
   }
