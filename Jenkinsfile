@@ -4,7 +4,7 @@ pipeline {
       image 'node:8.16.0-alpine'
       args '''-v 
 /var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app:/app  
--v /var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app/dev/node_modules:/app/dev/node_modules,shared
+-v /var/lib/jenkins/workspace/smap-coding-challenge_master/node_modules:/app/dev/node_modules,shared
 -p 3000:8088'''
     }
 
