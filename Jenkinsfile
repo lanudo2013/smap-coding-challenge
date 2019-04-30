@@ -19,7 +19,7 @@ pipeline {
       when {
         not {
           expression {
-            return fileExists('node_modules/vue')
+            return fileExists('/app/dev/node_modules/vue')
           }
 
         }
