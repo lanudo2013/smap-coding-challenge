@@ -19,6 +19,7 @@ pipeline {
         sh 'ls /app'
         sh 'cd /app/dev'
         sh 'cd /app/dev && npm install'
+        sh 'cd /app/dev && npm run start'
       }
     }
   }
