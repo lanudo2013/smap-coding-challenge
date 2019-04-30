@@ -6,7 +6,7 @@ pipeline {
 /var/lib/jenkins/workspace/smap-coding-challenge_master/frontend/app:/app
 -v /var/lib/jenkins/workspace/node_modules:/app/dev/node_modules
 -p
-3000:8088'''
+3001:8088'''
     }
 
   }
@@ -33,7 +33,18 @@ pipeline {
     }
     stage('Start') {
       steps {
-        sh 'cd /app/dev && npm run start'
+        sh 'cd /app/dev && npm run start &'
+      }
+    }
+    stage('Test') {
+      agent {
+        docker {
+          image 'nginx:alpine'
+        }
+
+      }
+      steps {
+        sh 'ls'
       }
     }
   }
