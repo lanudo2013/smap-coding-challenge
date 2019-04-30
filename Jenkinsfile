@@ -16,7 +16,7 @@ pipeline {
 
       }
       steps {
-        sh 'cd /app/dev'
+        sh 'ls /app'
         sh 'npm run build'
       }
     }
