@@ -46,7 +46,9 @@ npm_config_cache=npm-cache
     }
     stage('Start') {
       steps {
-        sh 'cd /app/dev && npm run start --unsafe-perm'
+        sh 'cd /app/dev && npm run start --unsafe-perm &'
+        sh 'sleep 10'
+        sh 'curl http://localhost:8088'
       }
     }
   }
