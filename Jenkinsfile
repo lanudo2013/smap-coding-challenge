@@ -39,12 +39,12 @@ pipeline {
       }
       steps {
         sh 'ls /app/dev'
-        sh 'cd /app/dev && npm install'
+        sh 'cd /app/dev && npm install --unsafe-perm'
       }
     }
     stage('Start') {
       steps {
-        sh 'cd /app/dev && npm run start'
+        sh 'cd /app/dev && npm run start --unsafe-perm'
       }
     }
   }
