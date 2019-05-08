@@ -44,7 +44,7 @@ pipeline {
     }
     stage('Start') {
       steps {
-        sh 'cd /app/dev && npm run start &'
+        sh 'cd /app/dev && npm run start'
       }
     }
   }
