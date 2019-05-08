@@ -51,14 +51,9 @@ npm_config_cache=npm-cache
       }
     }
     stage('Check page') {
-      agent {
-        docker {
-          image 'byrnedo/alpine-curl'
-        }
-
-      }
       steps {
-        sh 'curl http://localhost:8088'
+        sh '''apt-get install curl && curl http://localhost:8088
+'''
       }
     }
   }
