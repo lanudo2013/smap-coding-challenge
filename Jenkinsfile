@@ -39,7 +39,7 @@ pipeline {
       }
       steps {
         sh 'ls /app/dev'
-        sh 'cd /app/dev && npm install --unsafe-perm'
+        sh 'cd /app/dev && npm install --unsafe-perm=true --allow-root'
       }
     }
     stage('Start') {
