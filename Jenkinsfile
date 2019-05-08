@@ -47,18 +47,5 @@ pipeline {
         sh 'cd /app/dev && npm run start &'
       }
     }
-    stage('Test') {
-      agent {
-        docker {
-          image 'nginx:latest'
-          args '''-p
-9000:80'''
-        }
-
-      }
-      steps {
-        sh 'ls'
-      }
-    }
   }
 }
