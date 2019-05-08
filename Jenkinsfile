@@ -16,6 +16,17 @@ pipeline {
         sh 'ls /app/dev'
       }
     }
+    stage('Check node modules') {
+      when {
+        expression {
+          return fileExists('/app/dev/node_modules/vue')
+        }
+
+      }
+      steps {
+        echo 'Exists'
+      }
+    }
     stage('Build') {
       when {
         not {
