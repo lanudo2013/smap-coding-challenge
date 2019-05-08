@@ -52,7 +52,7 @@ npm_config_cache=npm-cache
     }
     stage('Check page') {
       steps {
-        sh '''apt-get install curl && curl http://localhost:8088
+        sh '''wget http://localhost:8088
 '''
       }
     }
