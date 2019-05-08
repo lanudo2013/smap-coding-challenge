@@ -48,7 +48,17 @@ npm_config_cache=npm-cache
       steps {
         sh 'cd /app/dev && npm run start --unsafe-perm &'
         sh 'sleep 10'
-        sh 'wget http://localhost:8088'
+      }
+    }
+    stage('Check page') {
+      agent {
+        docker {
+          image 'byrnedo/alpine-curl'
+        }
+
+      }
+      steps {
+        sh 'curl http://localhost:8088'
       }
     }
   }
