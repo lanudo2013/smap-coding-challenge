@@ -44,7 +44,7 @@ pipeline {
         timeout(time: 5) {
           waitUntil() {
             script {
-              def r = sh script: 'wget -q http://remoterhoste/welcome.jsf -O /dev/null', returnStatus: true
+              def r = sh script: 'wget -q http://localhost:8088', returnStatus: true
               return (r == 0)
             }
 
