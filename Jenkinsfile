@@ -45,6 +45,7 @@ pipeline {
           waitUntil() {
             script {
               def r = sh script: 'wget -q http://localhost:8088', returnStatus: true
+              sh 'sleep 1'
               return (r == 0)
             }
 
