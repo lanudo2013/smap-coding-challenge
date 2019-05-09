@@ -45,7 +45,7 @@ pipeline {
     }
     stage('Check page') {
       steps {
-        sh '''wget http://localhost:8088
+        sh '''curl http://localhost:8088
 '''
       }
     }
