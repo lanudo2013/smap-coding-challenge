@@ -1,6 +1,5 @@
 
 FROM node:8.16.0-alpine
-USER jenkins
 COPY ./frontend/app /app
 RUN chmod 777 -R  /app 
 VOLUME /app
