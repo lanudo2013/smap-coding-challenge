@@ -2,7 +2,7 @@ pipeline {
   agent {
     dockerfile {
       filename 'Dockerfile'
-      args '-v "/var/lib/jenkins/workspace/smap_nodeModules:/app/dev/node_modules" -e npm_config_cache=npm-cache'
+      args '-e npm_config_cache=npm-cache'
     }
 
   }
