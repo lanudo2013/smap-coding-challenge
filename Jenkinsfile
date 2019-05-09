@@ -2,7 +2,7 @@ pipeline {
   agent {
     dockerfile {
       filename 'Dockerfile'
-      args '-v $(pwd)/nodeModules:/app/dev/node_modules'
+      args '-v "$(pwd)/nodeModules:/app/dev/node_modules"'
     }
 
   }
