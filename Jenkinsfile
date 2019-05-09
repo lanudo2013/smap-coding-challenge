@@ -41,7 +41,17 @@ pipeline {
     stage('Start') {
       steps {
         sh 'cd /app/dev && npm run start --unsafe-perm &'
-        sh 'sleep 10'
+        timeout(time: 5) {
+          waitUntil() {
+            script {
+              def r = sh script: 'wget -q http://remoterhoste/welcome.jsf -O /dev/null', returnStatus: true
+              return (r == 0)
+            }
+
+          }
+
+        }
+
       }
     }
     stage('Check page') {
