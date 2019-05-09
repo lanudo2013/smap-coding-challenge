@@ -2,6 +2,7 @@ pipeline {
   agent {
     dockerfile {
       filename 'Dockerfile'
+      args '-v  /var/lib/jenkins/workspace/smap_nodemodules:/app/dev/node_modules'
     }
 
   }
